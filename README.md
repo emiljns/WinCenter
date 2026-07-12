@@ -5,12 +5,12 @@ WinCenter is a lightweight Windows tray utility written in C++ that lets you **c
 ---
 
 ## ✨ Features
-- **Ctrl+Shift+C** → centers the active window on the current monitor.
-- **Ctrl+Alt+Q** → exits the utility.
-- Tray icon with right‑click menu for quick exit.
-- Works with normal and maximized windows.
-- Multi‑monitor aware: centers relative to the active monitor’s work area.
-- DPI‑aware for crisp scaling across displays.
+- **Ctrl+Shift+C** → centers the active window on the current monitor
+- **Ctrl+Alt+Q** → exits the utility
+- Tray icon with right click menu for quick exit
+- Works with normal and maximized windows
+- Multi monitor aware: centers relative to the active monitor’s work area
+- DPI‑aware for crisp scaling across displays
 
 ---
 
