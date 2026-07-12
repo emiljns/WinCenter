@@ -18,3 +18,7 @@ WinCenter is a lightweight Windows tray utility written in C++ that lets you **c
 1. Clone the repo:
    ```bash
    git clone https://github.com/emiljns/WinCenter.git
+
+## 🚀 Releases
+You can always find the latest builds here:  
+👉 [WinCenter Releases](https://github.com/emiljns/WinCenter/releases)
