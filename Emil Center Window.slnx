@@ -6,5 +6,7 @@
   <Folder Name="/Solution Items/">
     <File Path="README.md" />
   </Folder>
-  <Project Path="Emil Centre Windows 2/Emil Centre Windows 2.vcxproj" Id="d32cb0a0-de69-405a-8d21-b71d140c83da" />
+  <Project Path="Emil Centre Windows 2/Emil Centre Windows 2.vcxproj" Id="d32cb0a0-de69-405a-8d21-b71d140c83da">
+    <BuildType Solution="Debug|x64" Project="Release" />
+  </Project>
 </Solution>
