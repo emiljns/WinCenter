@@ -18,7 +18,8 @@ jobs:
         uses: microsoft/setup-msbuild@v1.3
 
       - name: Build WinCenter (Release x64)
-        run: msbuild "WinCenter.sln" /p:Configuration=Release /p:Platform=x64
+      - run: msbuild "Emil Center Window.slnx" /p:Configuration=Release /p:Platform=x64
+
 
       - name: Package Release
         run: |
