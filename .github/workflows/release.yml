@@ -1,35 +1,26 @@
-# .github/workflows/release.yml
 name: Build and Release WinCenter
 
 on:
   push:
     tags:
-      - 'v*'   # triggers on version tags like v1.0.2
+      - 'v*'
 
 jobs:
   build:
     runs-on: windows-latest
-
     steps:
-      - name: Checkout repo
+      - name: Checkout code
         uses: actions/checkout@v4
 
       - name: Setup MSBuild
         uses: microsoft/setup-msbuild@v1.3
 
-      - name: Build WinCenter (Release x64)
-      - run: msbuild "Emil Center Window.slnx" /p:Configuration=Release /p:Platform=x64
+      - name: Build solution
+        run: msbuild "Emil Center Window.slnx" /p:Configuration=Release /p:Platform=x64
 
-
-      - name: Package Release
-        run: |
-          mkdir dist
-          copy x64\Release\WinCenter.exe dist\
-          copy README.md dist\
-          if exist LICENSE copy LICENSE dist\
-          powershell Compress-Archive -Path dist\* -DestinationPath WinCenter-${{ github.ref_name }}-PeasantPC.zip
-
-      - name: Upload Release Asset
-        uses: softprops/action-gh-release@v1
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
         with:
-          files: WinCenter-${{ github.ref_name }}-PeasantPC.zip
+          name: WinCenter
+          path: |
+            **\bin\Release\**
