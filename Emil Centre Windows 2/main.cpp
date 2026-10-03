@@ -52,8 +52,9 @@ static AdjustProc pAdjust = reinterpret_cast<AdjustProc>(
 // Helpers
 // ============================================================
 
-// Single source of truth for "can we work with this window?"
-bool IsResizableTarget(HWND hwnd)
+// Any normal app window we can safely move (resizable or not).
+// Requiring a caption filters out Start menu, flyouts, Alt+Tab, etc.
+bool IsUsableWindow(HWND hwnd)
 {
     if (!hwnd || hwnd == g_trayWnd) return false;
     if (!IsWindow(hwnd) || !IsWindowVisible(hwnd)) return false;
@@ -62,15 +63,22 @@ bool IsResizableTarget(HWND hwnd)
     LONG_PTR style = GetWindowLongPtrW(hwnd, GWL_STYLE);
     LONG_PTR exStyle = GetWindowLongPtrW(hwnd, GWL_EXSTYLE);
 
-    if (!(style & WS_THICKFRAME)) return false;
+    if ((style & WS_CAPTION) != WS_CAPTION) return false;
     if (exStyle & WS_EX_TOOLWINDOW) return false;
 
     return true;
 }
 
+// Windows we can also resize (needs a sizing frame).
+bool IsResizableTarget(HWND hwnd)
+{
+    if (!IsUsableWindow(hwnd)) return false;
+    return (GetWindowLongPtrW(hwnd, GWL_STYLE) & WS_THICKFRAME) != 0;
+}
+
 void CALLBACK ForegroundProc(HWINEVENTHOOK, DWORD, HWND hwnd, LONG, LONG, DWORD, DWORD)
 {
-    if (IsResizableTarget(hwnd))
+    if (IsUsableWindow(hwnd))
         g_lastForeground = hwnd;
 }
 
@@ -90,7 +98,7 @@ void CleanupHotkeys()
 
 void CenterWindow(HWND hwnd)
 {
-    if (!IsResizableTarget(hwnd)) return;
+    if (!IsUsableWindow(hwnd)) return;
     if (IsIconic(hwnd)) return;
 
     RECT rc{};
@@ -213,7 +221,7 @@ LRESULT CALLBACK TrayWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
         HWND active = g_target;
         g_target = nullptr; // snapshot is single-use
 
-        if (!IsResizableTarget(active))
+        if (!IsUsableWindow(active))
             break;
 
         switch (LOWORD(wParam))
@@ -301,7 +309,7 @@ int WINAPI wWinMain(
 
     // Seed with the same filter the hook uses.
     HWND fg = GetForegroundWindow();
-    if (IsResizableTarget(fg))
+    if (IsUsableWindow(fg))
         g_lastForeground = fg;
 
     // ---- Tray icon ----
